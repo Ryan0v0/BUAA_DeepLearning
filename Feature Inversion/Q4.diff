@@ -1,0 +1,36 @@
+diff -u ../Q1/1-2/train.py res2/train.py
+--- ../Q1/1-2/train.py	2020-06-25 02:56:13.000000000 +0800
++++ res2/train.py	2020-06-25 02:56:13.000000000 +0800
+@@ -13,12 +13,12 @@
+ import tensorflow as tf
+ 
+ from common import config
+-import custom_vgg16_bn as vgg16
++import custom_resnet18 as resnet18
+ import cv2
+ import numpy as np
+ 
+ '''use conv3_1 to generate representation'''
+-FEATURE_LAYERS = ['conv3_1']
++FEATURE_LAYERS = ['res2']
+ image_shape = (1, 224, 224, 3)
+ 
+ def get_feature_loss(noise,source):
+@@ -55,13 +55,13 @@
+     image = (image/255).astype('float32')
+ 
+     '''get representation of the target image, which the noise image will approximate'''
+-    with tf.name_scope('vgg_src'):
+-        image_model = vgg16.Model()
++    with tf.name_scope('resnet_src'):
++        image_model = resnet18.Resnet18()
+         image_model.build(image)
+ 
+     '''get representation of the noise image'''
+-    with tf.name_scope('vgg_noise'):
+-        noise_model = vgg16.Model()
++    with tf.name_scope('resnet_noise'):
++        noise_model = resnet18.Resnet18()
+         noise_model.build(noise)
+ 
+     '''compute representation difference between noise feature and target feature'''

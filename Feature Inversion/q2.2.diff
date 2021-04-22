@@ -1,0 +1,16 @@
+diff -u ../Q1/1-2/train.py tv-h/train.py
+--- ../Q1/1-2/train.py	2020-06-25 02:56:13.000000000 +0800
++++ tv-h/train.py	2020-06-25 02:56:13.000000000 +0800
+@@ -67,8 +67,11 @@
+     '''compute representation difference between noise feature and target feature'''
+     with tf.name_scope('loss'):
+         loss = get_feature_loss(noise_model, image_model)
++        tv_loss_i = tf.reduce_mean((noise[:, 1:, :, :] - noise[:, :-1, :, :]) ** 2)
++        tv_loss_j = tf.reduce_mean((noise[:, :, 1:, :] - noise[:, :, :-1, :]) ** 2)
++        tv_loss = tv_loss_i + tv_loss_j
+ 
+-    total_loss = loss
++    total_loss = loss + 10 * tv_loss
+ 
+     global_steps = tf.Variable(0, trainable=False)
+     lr = 1e-2

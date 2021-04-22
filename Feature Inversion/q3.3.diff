@@ -1,0 +1,12 @@
+diff -u ../Q1/1-2/train.py multiple/train.py
+--- ../Q1/1-2/train.py	2020-06-25 02:56:13.000000000 +0800
++++ multiple/train.py	2020-06-25 02:56:13.000000000 +0800
+@@ -18,7 +18,7 @@
+ import numpy as np
+ 
+ '''use conv3_1 to generate representation'''
+-FEATURE_LAYERS = ['conv3_1']
++FEATURE_LAYERS = ['conv3_1', 'fc6']
+ image_shape = (1, 224, 224, 3)
+ 
+ def get_feature_loss(noise,source):
