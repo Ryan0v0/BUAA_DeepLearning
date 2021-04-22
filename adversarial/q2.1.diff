@@ -1,0 +1,10 @@
+diff -u bl/attack.py q21/attack.py
+--- bl/attack.py	2020-04-24 00:24:09.592576366 +0800
++++ q21/attack.py	2020-04-24 00:24:43.139929368 +0800
+@@ -35,2 +35,5 @@
+         loss = tf.reduce_sum(tf.nn.softmax_cross_entropy_with_logits(labels=target_one_hot, logits=logits)) * (-1)
++        tv = tf.reduce_mean(tf.image.total_variation(x_norm))
++        loss += tv
++        loss = tf.cast(loss, dtype=tf.float32)
+         acc = tf.reduce_mean(tf.cast(tf.equal(tf.cast(tf.argmax(preds, 1), dtype=tf.int32),
+                                               tf.cast(tf.argmax(gt_one_hot, 1), dtype=tf.int32)), tf.float32))
