@@ -1,0 +1,11 @@
+--- ./1/train.py	2020-06-27 22:36:53.000000000 +0800
++++ ./3.2/train.py	2020-06-27 22:47:58.000000000 +0800
+@@ -11,7 +11,7 @@
+ 
+ '''use 13 convolution layers to generate gram matrix'''
+ 
+-GRAM_LAYERS= ['conv1_1', 'conv1_2', 'conv2_1', 'conv2_2', 'conv3_1', 'conv3_2', 'conv3_3', 'conv4_1', 'conv4_2', 'conv4_3', 'conv5_1', 'conv5_2', 'conv5_3']
++GRAM_LAYERS = ['conv1_1', 'conv2_1', 'conv3_1', 'conv4_1', 'conv5_1']
+ image_shape = (1, 224, 224, 3)
+ 
+ '''you need to complete this method'''

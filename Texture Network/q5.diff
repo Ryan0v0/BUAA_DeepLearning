@@ -1,0 +1,12 @@
+--- ./1/train.py	2020-06-27 22:36:53.000000000 +0800
++++ ./5/train.py	2020-06-27 22:50:09.000000000 +0800
+@@ -23,7 +23,8 @@
+ def get_l2_gram_loss_for_layer(noise, source, layer):
+     Gram_s = get_gram_matrix(getattr(source, layer))
+     Gram_n = get_gram_matrix(getattr(source, layer))
+-    return tf.nn.l2_loss((Gram_s-Gram_n))/2
++    weight = ((GRAM_LAYERS.index(layer) + 1) / len(GRAM_LAYERS)) ** 2
++    return weight * tf.reduce_sum(tf.square(Gram_n - Gram_s))
+ 
+ def get_gram_loss(noise, source):
+     with tf.name_scope('get_gram_loss'):

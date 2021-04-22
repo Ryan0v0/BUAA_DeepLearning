@@ -1,0 +1,19 @@
+--- train.py	2020-06-27 22:36:10.000000000 +0800
++++ ./1/train.py	2020-06-27 22:36:53.000000000 +0800
+@@ -15,8 +15,15 @@
+ image_shape = (1, 224, 224, 3)
+ 
+ '''you need to complete this method'''
+-def get_l2_gram_loss_for_layer(noise, source, layer):
++def get_gram_matrix(feature_map):
++    shape = feature_map.get_shape().as_list()
++    re_shape = tf.reshape(feature_map, (-1, shape[3]))
++    return tf.matmul(re_shape, re_shape, transpose_a=True) / (shape[1]*shape[2]*shape[3])
+ 
++def get_l2_gram_loss_for_layer(noise, source, layer):
++    Gram_s = get_gram_matrix(getattr(source, layer))
++    Gram_n = get_gram_matrix(getattr(source, layer))
++    return tf.nn.l2_loss((Gram_s-Gram_n))/2
+ 
+ def get_gram_loss(noise, source):
+     with tf.name_scope('get_gram_loss'):
