@@ -1,0 +1,23 @@
+diff -u -- 01-svhn/common.py q4.2.diff/common.py
+--- 01-svhn/common.py	2020-04-10 17:34:13.348353700 +0800
++++ q4.2.diff/common.py	2020-04-10 23:01:30.705135800 +0800
+@@ -25,6 +25,7 @@
+     nr_class = 10
+     nr_epoch = 40
+     weight_decay = 1e-10
++    lp_reg = 2
+ 
+     show_interval = 100
+     snapshot_interval = 2
+diff -u -- 01-svhn/model.py q4.2.diff/model.py
+--- 01-svhn/model.py	2020-04-09 13:01:10.000000000 +0800
++++ q4.2.diff/model.py	2020-04-10 10:20:46.672809300 +0800
+@@ -19,7 +19,7 @@
+         self.weight_init = tf_contrib.layers.variance_scaling_initializer(factor=1.0,
+                                 mode='FAN_IN', uniform=False)
+         self.bias_init = tf.zeros_initializer()
+-        self.reg = tf_contrib.layers.l2_regularizer(config.weight_decay)
++        self.reg = lambda x: config.weight_decay * tf.reduce_sum(tf.pow(tf.abs(x), config.lp_reg)) * (-1)
+ 
+     def _conv_layer(self, name, inp, kernel_shape, stride, padding='SAME',is_training=False):
+         with tf.variable_scope(name) as scope:

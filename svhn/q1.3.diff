@@ -1,0 +1,21 @@
+diff -u ori/train.py q1/3/train.py
+--- ori/train.py	2019-06-05 03:11:02.000000000 +0800
++++ q1/3/train.py	2020-04-10 23:25:11.000000000 +0800
+@@ -33,7 +33,7 @@
+ def main():
+     parser = argparse.ArgumentParser()
+     parser.add_argument('-c', '--continue', dest='continue_path', required=False)
+-    parser.add_argument('-l', '--loss', default='softmax')
++    parser.add_argument('-l', '--loss', default='plus-one-abs-max')
+     args = parser.parse_args()
+ 
+     assert args.loss in ['softmax', 'abs-max', 'square-max', 'plus-one-abs-max', 'non-negative-max']
+@@ -67,7 +67,7 @@
+                             tf.cast(tf.argmax(label_onehot, 1), dtype=tf.int32))
+     accuracy = tf.reduce_mean(tf.cast(correct_pred, tf.float32))
+     loss_reg = tf.add_n(tf.get_collection(tf.GraphKeys.REGULARIZATION_LOSSES))
+-    loss = tf.losses.softmax_cross_entropy(label_onehot, logits) + loss_reg
++    loss = -tf.reduce_mean(tf.reduce_sum(tf.cast(label_onehot,dtype=tf.float32)*tf.log(tf.clip_by_value(preds,1e-10,1.0)),axis=-1))+loss_reg
+ 
+     ## train config
+     global_steps = tf.Variable(0, trainable=False)
